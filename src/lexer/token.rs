@@ -1,5 +1,5 @@
-use std::fmt;
 use super::token_type::{Literal, TokenType};
+use std::fmt;
 
 #[derive(Debug)]
 pub struct Token {
@@ -11,7 +11,13 @@ pub struct Token {
 }
 
 impl Token {
-    pub fn new(token_type: TokenType, lexeme: String, literal: Option<Literal>, line: usize, column: usize) -> Self {
+    pub fn new(
+        token_type: TokenType,
+        lexeme: String,
+        literal: Option<Literal>,
+        line: usize,
+        column: usize,
+    ) -> Self {
         Token {
             token_type,
             lexeme,
@@ -29,7 +35,8 @@ impl fmt::Display for Token {
             None => "None".to_string(),
         };
 
-        write!(f,
+        write!(
+            f,
             "Token {{ 
                 type: {:?}, 
                 lexeme: '{}', 
@@ -41,5 +48,3 @@ impl fmt::Display for Token {
         )
     }
 }
-
-
