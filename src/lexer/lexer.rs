@@ -31,8 +31,12 @@ impl<'a> Lexer<'a> {
         while let Some(character) = self.source.peek() {
             match *character {
                 '\n' => {
+                    // increament the line and reset the column back to 1
+                    // reset only if we have next character otherwise no need to reset
                     self.line += 1;
-                    self.move_ahead();
+                    if let Some(_) = self.source.next() {
+                        self.column = 1;
+                    }
                 }
                 '(' => {
                     self.add_token_move_ahead(TokenType::LEFTPAREN, "(", None);
@@ -49,11 +53,13 @@ impl<'a> Lexer<'a> {
         }
     }
 
+    // add token and move forward at the same time
     fn add_token_move_ahead(&mut self, token_type: TokenType, lexeme: &str, literal: Option<Literal>) {
         self.add_token(token_type, lexeme, literal);
         self.move_ahead();
     }
 
+    // just add token
     fn add_token(&mut self, token_type: TokenType, lexeme: &str, literal: Option<Literal>) {
         self.tokens.push(Token::new(
             token_type,
@@ -64,7 +70,9 @@ impl<'a> Lexer<'a> {
         ));
     }
 
+    // just move forward as long as we have next character
     fn move_ahead(&mut self) {
+        // increament the column cursor by 1 as we go forward
         if let Some(_) = self.source.next() {
             self.column += 1;
         }
